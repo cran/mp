@@ -1,11 +1,17 @@
+#' @importFrom stats dist
+{}
 #' Local Affine Multidimensional Projection
 #'
-#' Creates a 2D representation of the data based on an initial projectec sample.
+#' Creates a 2D representation of the data. Requires a subsample
+#' (sample.indices) and its 2D representation (Ys).
 #'
-#' @param X A data frame or matrix to be projected.
-#' @param sample.indices The indices of data points in X considered as samples.
-#' @param Ys Initial 2D configuration of the data samples (will be ignored if
+#' @param X A data frame or matrix.
+#' @param sample.indices The indices of data points in X used as subsamples. If
+#'   not given, some points from X will be randomly selected and Ys will be generated
+#'   by calling forceScheme on them.
+#' @param Ys Initial 2D configuration of the data subsamples (will be ignored if
 #'   sample.indices is NULL).
+#' @param cp Proportion of nearest control points to be used.
 #' @return The 2D representation of the data.
 #'
 #' @references Joia, P.; Paulovich, F.V.; Coimbra, D.; Cuminato, J.A.; Nonato,
@@ -15,35 +21,36 @@
 #'
 #' @examples
 #' # Iris example
-#' proj = lamp(iris[, 1:4])
-#' plot(proj, col = iris$Species)
+#' emb <- lamp(iris[, 1:4])
+#' plot(emb, col=iris$Species)
 #'
 #' @useDynLib mp
 #' @export
-lamp = function(X, sample.indices=NULL, Ys=NULL) {
+lamp <- function(X, sample.indices=NULL, Ys=NULL, cp=1) {
   if (!is.matrix(X)) {
-    X = as.matrix(X)
+    X <- as.matrix(X)
   }
 
   if (is.null(sample.indices)) {
-    n = nrow(X)
-    sample.indices = sample(1:n, sqrt(n))
-    Ys = forceScheme(dist(X[sample.indices, ]))
-  } else if (is.null(Ys)) {
-    sample.indices = as.vector(sample.indices)
-    Ys = forceScheme(dist(X[sample.indices, ]))
+    n <- nrow(X)
+    sample.indices <- sample(1:n, sqrt(n))
+    Ys <- NULL
+  }
+
+  if (is.null(Ys)) {
+    sample.indices <- as.vector(sample.indices)
+    Ys <- forceScheme(stats::dist(X[sample.indices, ]))
   }
 
   if (!is.matrix(Ys)) {
-    Ys = as.matrix(Ys)
+    Ys <- as.matrix(Ys)
   }
 
-  # sanity check
   if (length(sample.indices) != nrow(Ys)) {
-    stop("sample.indices and Ys do not match sizes")
+    stop("sample.indices and Ys must have the same number of instances")
   }
 
-  .Call("mp_lamp", X, sample.indices, Ys, PACKAGE="mp")
+  .Call("mp_lamp", X, sample.indices, Ys, cp, PACKAGE="mp")
 }
 
 #lamp = function(X, sample.indices = NULL, Ys = NULL) {
@@ -59,7 +66,7 @@ lamp = function(X, sample.indices=NULL, Ys=NULL) {
 #    }
 #
 #    Y = t(apply(X, 1, function(point) {
-#        alphas = apply(Xs, 1, function(sample.point) sum((sample.point - point)^2))
+#        alphas = apply(Xs, 1, function(sample.point) 1 / sum((sample.point - point)^2))
 #        alphas.sum = sum(alphas)
 #        alphas.sqrt = sqrt(alphas)
 #

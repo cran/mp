@@ -7,39 +7,48 @@
 using namespace Rcpp;
 
 // forceScheme
-arma::mat forceScheme(arma::mat p, arma::mat dmat, int max_it, double tol, double EPSILON, double fraction);
-RcppExport SEXP mp_forceScheme(SEXP pSEXP, SEXP dmatSEXP, SEXP max_itSEXP, SEXP tolSEXP, SEXP EPSILONSEXP, SEXP fractionSEXP) {
+arma::mat forceScheme(const arma::mat& D, arma::mat& Y, int max_iter, double tol, double fraction, double EPSILON);
+RcppExport SEXP mp_forceScheme(SEXP DSEXP, SEXP YSEXP, SEXP max_iterSEXP, SEXP tolSEXP, SEXP fractionSEXP, SEXP EPSILONSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< arma::mat >::type p(pSEXP );
-        Rcpp::traits::input_parameter< arma::mat >::type dmat(dmatSEXP );
-        Rcpp::traits::input_parameter< int >::type max_it(max_itSEXP );
-        Rcpp::traits::input_parameter< double >::type tol(tolSEXP );
-        Rcpp::traits::input_parameter< double >::type EPSILON(EPSILONSEXP );
-        Rcpp::traits::input_parameter< double >::type fraction(fractionSEXP );
-        arma::mat __result = forceScheme(p, dmat, max_it, tol, EPSILON, fraction);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const arma::mat& >::type D(DSEXP);
+    Rcpp::traits::input_parameter< arma::mat& >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    Rcpp::traits::input_parameter< double >::type fraction(fractionSEXP);
+    Rcpp::traits::input_parameter< double >::type EPSILON(EPSILONSEXP);
+    __result = Rcpp::wrap(forceScheme(D, Y, max_iter, tol, fraction, EPSILON));
+    return __result;
 END_RCPP
 }
 // lamp
-arma::mat lamp(arma::mat X, arma::uvec sampleIndices, arma::mat Ys);
-RcppExport SEXP mp_lamp(SEXP XSEXP, SEXP sampleIndicesSEXP, SEXP YsSEXP) {
+arma::mat lamp(const arma::mat& X, const arma::uvec& sampleIndices, const arma::mat& Ys, double cp);
+RcppExport SEXP mp_lamp(SEXP XSEXP, SEXP sampleIndicesSEXP, SEXP YsSEXP, SEXP cpSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP );
-        Rcpp::traits::input_parameter< arma::uvec >::type sampleIndices(sampleIndicesSEXP );
-        Rcpp::traits::input_parameter< arma::mat >::type Ys(YsSEXP );
-        arma::mat __result = lamp(X, sampleIndices, Ys);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::uvec& >::type sampleIndices(sampleIndicesSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type Ys(YsSEXP);
+    Rcpp::traits::input_parameter< double >::type cp(cpSEXP);
+    __result = Rcpp::wrap(lamp(X, sampleIndices, Ys, cp));
+    return __result;
+END_RCPP
+}
+// tSNE
+arma::mat tSNE(const arma::mat& X, const arma::mat& initialY, double perplexity, arma::uword k, arma::uword niter, bool isDist);
+RcppExport SEXP mp_tSNE(SEXP XSEXP, SEXP initialYSEXP, SEXP perplexitySEXP, SEXP kSEXP, SEXP niterSEXP, SEXP isDistSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type initialY(initialYSEXP);
+    Rcpp::traits::input_parameter< double >::type perplexity(perplexitySEXP);
+    Rcpp::traits::input_parameter< arma::uword >::type k(kSEXP);
+    Rcpp::traits::input_parameter< arma::uword >::type niter(niterSEXP);
+    Rcpp::traits::input_parameter< bool >::type isDist(isDistSEXP);
+    __result = Rcpp::wrap(tSNE(X, initialY, perplexity, k, niter, isDist));
+    return __result;
 END_RCPP
 }
