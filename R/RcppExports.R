@@ -5,11 +5,11 @@ forceScheme <- function(D, Y, max_iter, tol, fraction, EPSILON) {
     .Call('mp_forceScheme', PACKAGE = 'mp', D, Y, max_iter, tol, fraction, EPSILON)
 }
 
-lamp <- function(X, sampleIndices, Ys, cp) {
-    .Call('mp_lamp', PACKAGE = 'mp', X, sampleIndices, Ys, cp)
+lamp <- function(X, RsampleIndices, Ys, cp) {
+    .Call('mp_lamp', PACKAGE = 'mp', X, RsampleIndices, Ys, cp)
 }
 
-tSNE <- function(X, initialY, perplexity, k, niter, isDist) {
-    .Call('mp_tSNE', PACKAGE = 'mp', X, initialY, perplexity, k, niter, isDist)
+tSNE <- function(X, initialY, perplexity, k, niter, isDist, ETA, INITIAL_MOMENTUM, FINAL_MOMENTUM, EARLY_EXAGGERATION, GAIN_FRACTION, MOMENTUM_THRESHOLD_ITER, EXAGGERATION_THRESHOLD_ITER, MAX_BINSEARCH_TRIES) {
+    .Call('mp_tSNE', PACKAGE = 'mp', X, initialY, perplexity, k, niter, isDist, ETA, INITIAL_MOMENTUM, FINAL_MOMENTUM, EARLY_EXAGGERATION, GAIN_FRACTION, MOMENTUM_THRESHOLD_ITER, EXAGGERATION_THRESHOLD_ITER, MAX_BINSEARCH_TRIES)
 }
 

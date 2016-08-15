@@ -23,22 +23,22 @@ BEGIN_RCPP
 END_RCPP
 }
 // lamp
-arma::mat lamp(const arma::mat& X, const arma::uvec& sampleIndices, const arma::mat& Ys, double cp);
-RcppExport SEXP mp_lamp(SEXP XSEXP, SEXP sampleIndicesSEXP, SEXP YsSEXP, SEXP cpSEXP) {
+arma::mat lamp(const arma::mat& X, const arma::uvec& RsampleIndices, const arma::mat& Ys, double cp);
+RcppExport SEXP mp_lamp(SEXP XSEXP, SEXP RsampleIndicesSEXP, SEXP YsSEXP, SEXP cpSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
-    Rcpp::traits::input_parameter< const arma::uvec& >::type sampleIndices(sampleIndicesSEXP);
+    Rcpp::traits::input_parameter< const arma::uvec& >::type RsampleIndices(RsampleIndicesSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type Ys(YsSEXP);
     Rcpp::traits::input_parameter< double >::type cp(cpSEXP);
-    __result = Rcpp::wrap(lamp(X, sampleIndices, Ys, cp));
+    __result = Rcpp::wrap(lamp(X, RsampleIndices, Ys, cp));
     return __result;
 END_RCPP
 }
 // tSNE
-arma::mat tSNE(const arma::mat& X, const arma::mat& initialY, double perplexity, arma::uword k, arma::uword niter, bool isDist);
-RcppExport SEXP mp_tSNE(SEXP XSEXP, SEXP initialYSEXP, SEXP perplexitySEXP, SEXP kSEXP, SEXP niterSEXP, SEXP isDistSEXP) {
+arma::mat tSNE(const arma::mat& X, const arma::mat& initialY, double perplexity, arma::uword k, arma::uword niter, bool isDist, double ETA, double INITIAL_MOMENTUM, double FINAL_MOMENTUM, double EARLY_EXAGGERATION, double GAIN_FRACTION, int MOMENTUM_THRESHOLD_ITER, int EXAGGERATION_THRESHOLD_ITER, int MAX_BINSEARCH_TRIES);
+RcppExport SEXP mp_tSNE(SEXP XSEXP, SEXP initialYSEXP, SEXP perplexitySEXP, SEXP kSEXP, SEXP niterSEXP, SEXP isDistSEXP, SEXP ETASEXP, SEXP INITIAL_MOMENTUMSEXP, SEXP FINAL_MOMENTUMSEXP, SEXP EARLY_EXAGGERATIONSEXP, SEXP GAIN_FRACTIONSEXP, SEXP MOMENTUM_THRESHOLD_ITERSEXP, SEXP EXAGGERATION_THRESHOLD_ITERSEXP, SEXP MAX_BINSEARCH_TRIESSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -48,7 +48,15 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< arma::uword >::type k(kSEXP);
     Rcpp::traits::input_parameter< arma::uword >::type niter(niterSEXP);
     Rcpp::traits::input_parameter< bool >::type isDist(isDistSEXP);
-    __result = Rcpp::wrap(tSNE(X, initialY, perplexity, k, niter, isDist));
+    Rcpp::traits::input_parameter< double >::type ETA(ETASEXP);
+    Rcpp::traits::input_parameter< double >::type INITIAL_MOMENTUM(INITIAL_MOMENTUMSEXP);
+    Rcpp::traits::input_parameter< double >::type FINAL_MOMENTUM(FINAL_MOMENTUMSEXP);
+    Rcpp::traits::input_parameter< double >::type EARLY_EXAGGERATION(EARLY_EXAGGERATIONSEXP);
+    Rcpp::traits::input_parameter< double >::type GAIN_FRACTION(GAIN_FRACTIONSEXP);
+    Rcpp::traits::input_parameter< int >::type MOMENTUM_THRESHOLD_ITER(MOMENTUM_THRESHOLD_ITERSEXP);
+    Rcpp::traits::input_parameter< int >::type EXAGGERATION_THRESHOLD_ITER(EXAGGERATION_THRESHOLD_ITERSEXP);
+    Rcpp::traits::input_parameter< int >::type MAX_BINSEARCH_TRIES(MAX_BINSEARCH_TRIESSEXP);
+    __result = Rcpp::wrap(tSNE(X, initialY, perplexity, k, niter, isDist, ETA, INITIAL_MOMENTUM, FINAL_MOMENTUM, EARLY_EXAGGERATION, GAIN_FRACTION, MOMENTUM_THRESHOLD_ITER, EXAGGERATION_THRESHOLD_ITER, MAX_BINSEARCH_TRIES));
     return __result;
 END_RCPP
 }

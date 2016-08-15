@@ -38,9 +38,8 @@ plmp <- function(X, sample.indices=NULL, Ys=NULL, k=2) {
   Xs <- X[sample.indices, ]
 
   if (is.null(Ys)) {
-    sample.indices <- as.vector(sample.indices)
-    Ys <- forceScheme(dist(Xs))
     # FIXME: forceScheme is always 2D, using k > 2 will break the code
+    Ys <- forceScheme(dist(Xs))
   }
 
   if (!is.matrix(Ys)) {
@@ -55,12 +54,12 @@ plmp <- function(X, sample.indices=NULL, Ys=NULL, k=2) {
     stop("sample.indices and Ys must have the same number of instances")
   }
 
-  Ys <- Ys - colMeans(Ys)
+  Ys <- scale(Ys, center=T, scale=F)
   P <- matrix(NA, nrow=m, ncol=k)
+  A <- t(Xs) %*% Xs
+  L <- chol(A)
   for (j in 1:k) {
-    A <- t(Xs) %*% Xs
     b <- t(Xs) %*% Ys[, j]
-    L <- chol(A)
     P[, j] <- backsolve(L, backsolve(L, b, transpose=T))
   }
 

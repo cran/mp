@@ -19,13 +19,13 @@ arma::mat forceScheme(const arma::mat & D,
     for (arma::uword k = 0; k < n; k++)
         i[k] = j[k] = k;
 
-    double prev_delta_sum = 1. / 0.;
+    double prev_delta_sum = std::numeric_limits<double>::infinity();
     for (int iter = 0; iter < max_iter; iter++) {
         double delta_sum = 0;
 
-        arma::shuffle(i);
+        i = arma::shuffle(i);
         for (V::iterator a = i.begin(); a != i.end(); a++) {
-            arma::shuffle(j);
+            j = arma::shuffle(j);
             for (V::iterator b = j.begin(); b != j.end(); b++) {
                 if (*a == *b)
                     continue;
